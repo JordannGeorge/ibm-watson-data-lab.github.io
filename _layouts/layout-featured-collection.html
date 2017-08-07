@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  {% include head.html %}
+  <body id="{{ page.id }}">
+    {% include header.html %}
+    <main>
+    	<div class="container">
+        {% assign project = site.data.projects | where:"permalink",page.permalink %}
+        <div class="header">
+          <h1>
+            <span class="lead-in">Featured Collection</span>
+  {{ page.title }}
+          </h1>
+          <blockquote>{{ page.headline }}</blockquote>
+        </div>
+
+        <div>
+          <div class="row">
+
+            <div class="col m8">
+              {{ content }}
+            </div>
+
+            <div class="col m4 sidebar">
+              {% if page.essentials and page.essentials.size > 0 %}
+                <div class="section">
+                  <p class="subhead">
+                    {{ page.title }} Essentials
+                  </p>
+                  <ul>
+                    {% for link in page.essentials %}
+                    <li>
+                      <a href="{{ link[1] }}" title="{{ link[1] }}">{{ link[0] }} &rarr;</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="divider"></div>
+              {% endif %}
+              <div class="section">
+                <p class="subhead">
+                  Projects in this collection
+                </p>
+                {% assign items = site.data.projects | where:"features",page.permalink | reverse %}
+                {% include item.html items=items context="sidebar" %}                          
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+          {% for feature in site.strategies %}
+            {% if page.strategies contains feature.permalink %}
+              More like this: <a href="{{ feature.permalink }}">{{ feature.title }}</a>
+            {% endif %}
+          {% endfor %}
+          <p>
+            <a href="/projects">All projects</a>
+          </p>
+        </div><!--row-->
+      </div>
+    </main>
+    {% include footer.html %}
+  </body>
+</html>
